@@ -1,0 +1,50 @@
+{
+  "version": "1.0.1",
+  "name": "react-roast",
+  "description": "A React widget to get feedback",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "author": "satyamskillz",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "rollup": "rollup -c --bundleConfigAsCjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/react": "^19.0.9",
+    "postcss": "^8.5.2",
+    "postcss-import": "^16.1.0",
+    "react": "^19.0.0",
+    "rollup": "^4.34.7",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/satyamskillz/react-roast.git"
+  },
+  "keywords": [
+    "react",
+    "review",
+    "feedback",
+    "react-roast",
+    "react-widget",
+    "react-component"
+  ],
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "html2canvas": "^1.4.1",
+    "react-popper": "^2.3.0"
+  }
+}
