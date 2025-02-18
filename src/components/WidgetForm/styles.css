@@ -1,0 +1,59 @@
+@import url("../../global.css");
+
+.roast-form {
+	width: 100vw;
+	padding: 16px;
+	max-width: 420px;
+	border-radius: 4px;
+	background: var(--rrn-clr-100);
+	display: grid;
+	gap: 8px;
+
+	.form-inputs {
+		textarea {
+			width: 100%;
+			padding: 8px;
+			resize: none;
+			border-radius: 4px;
+			font-family: inherit;
+			background: transparent;
+			color: var(--rrn-clr-900);
+			font-size: calc(14 / 16 * 1rem);
+			border: 1px solid var(--rrn-clr-600);
+		}
+	}
+	.form-btns {
+		display: flex;
+		justify-content: space-between;
+
+		button {
+			font-weight: 300;
+			padding: 8px 12px;
+			border-radius: 4px;
+			font-size: calc(14 / 16 * 1rem);
+
+			&:focus {
+				box-shadow: 0 0 0 1px var(--rrn-clr-100), 0 0 0 2px var(--rrn-clr-600);
+			}
+
+			&:first-of-type {
+				background: transparent;
+				color: var(--rrn-clr-600);
+				border: 1px solid var(--rrn-clr-600);
+
+				&:active {
+					background: var(--rrn-clr-300);
+				}
+			}
+
+			&:last-of-type {
+				color: var(--rrn-clr-50);
+				background: var(--rrn-clr-600);
+
+				&:active {
+					opacity: 0.75;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,22 @@
+:root {
+	--rrn-clr-50: hsl(0, 0%, 100%);
+	--rrn-clr-100: hsl(0, 33%, 99%);
+	--rrn-clr-200: hsl(15, 33%, 97%);
+	--rrn-clr-300: hsl(11, 33%, 88%);
+	--rrn-clr-400: hsl(24, 38%, 69%);
+	--rrn-clr-500: hsl(17, 53%, 47%);
+	--rrn-clr-600: hsl(17, 53%, 24%);
+	--rrn-clr-700: hsl(17, 53%, 12%);
+	--rrn-clr-800: hsl(19, 53%, 6%);
+	--rrn-clr-900: hsl(15, 50%, 3%);
+}
+
+[data-roast-active="true"] {
+	*:hover:not(:has(*:hover)) {
+		outline: 2px dashed red;
+	}
+}
+
+* {
+	box-sizing: border-box;
+}
