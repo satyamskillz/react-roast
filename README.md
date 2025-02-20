@@ -6,7 +6,7 @@ A React widget to get feedback
 
 React Roast is an open-source app inspector that allows users to select elements on a webpage, capture their state (including screenshots), and send the details to a desired channel. This tool is useful for UI/UX testing, feedback collection, and debugging user interfaces.
 
-### **Demo** — [RoastNest.com](https://roastnest.com)
+### **Demo** — [RoastNest.com](https://roastnest.com) | [Growati.com](https://growati.com)
 
 ## Features
 
@@ -43,6 +43,8 @@ export default function App() {
 		// Must return boolean value.
 
 		try {
+			// Send message to desired channel like, Slack or discord
+
 			return true;
 		} catch (e) {
 			return false;
@@ -69,6 +71,8 @@ export default function ReactRoastProvider({ children: ReactNode }) {
 		// Must return boolean value.
 
 		try {
+			// Send message to desired channel like, Slack or discord
+
 			return true;
 		} catch (e) {
 			return false;
@@ -88,9 +92,9 @@ In app/layout.tsx
 export default function RootLayout({ children }) {
 	return (
 		<html>
-			<ReactRoastProvider>
-				<body>{children}</body>
-			</ReactRoastProvider>
+			<body>
+				<ReactRoastProvider>{children}</ReactRoastProvider>
+			</body>
 		</html>
 	);
 }
