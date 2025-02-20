@@ -3,14 +3,12 @@ import useRoastWidget from "../../hooks/useRoastWidget";
 import WidgetPoppper from "../WidgetPopper";
 
 import { Fragment } from "react";
-import useAppTheme from "../../hooks/useAppTheme";
 
 const padding = 8;
 const borderRadius = 4;
 
 export default function WidgetOverlay() {
 	const { active, selected, windowSize } = useRoastWidget();
-	const theme = useAppTheme();
 
 	if (!active || !selected.isSelected) return null;
 
@@ -66,7 +64,7 @@ export default function WidgetOverlay() {
 				<path
 					d={overlayPath}
 					style={{
-						fill: theme === "dark" ? "rgb(225,225,225,0.1)" : "rgb(0,0,0,0.5)",
+						fill: "rgba(64, 64, 64, 0.6)",
 						cursor: "auto",
 					}}
 				/>
