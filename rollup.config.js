@@ -5,10 +5,11 @@ import commonjs from "@rollup/plugin-commonjs";
 import postcss from "rollup-plugin-postcss";
 import terser from "@rollup/plugin-terser";
 import dts from "rollup-plugin-dts";
-
 import postcssImport from "postcss-import";
+import { visualizer } from "rollup-plugin-visualizer";
 
 const packageJson = require("./package.json");
+const isProduction = process.env.NODE_ENV === "production";
 
 export default [
 	{
@@ -17,12 +18,12 @@ export default [
 			{
 				file: packageJson.main,
 				format: "cjs",
-				sourcemap: true,
+				sourcemap: !isProduction,
 			},
 			{
 				file: packageJson.module,
 				format: "esm",
-				sourcemap: true,
+				sourcemap: !isProduction,
 			},
 		],
 		plugins: [
@@ -30,11 +31,29 @@ export default [
 			resolve(),
 			commonjs(),
 			typescript({ tsconfig: "./tsconfig.json" }),
-			terser(),
+			terser({
+				format: {
+					comments: false,
+				},
+				compress: {
+					drop_console: true,
+					drop_debugger: true,
+					pure_funcs: ["console.info", "console.warn"],
+				},
+				mangle: {
+					toplevel: true,
+				},
+			}),
 			postcss({
 				plugins: [postcssImport()],
 				inject: true,
 				minimize: true,
+			}),
+			visualizer({
+				open: true,
+				gzipSize: true,
+				brotliSize: true,
+				filename: "bundle-analysis.html",
 			}),
 		],
 		external: ["react", "react-dom"],

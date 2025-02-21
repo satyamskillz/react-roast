@@ -9,7 +9,9 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "rollup": "rollup -c --bundleConfigAsCjs"
+    "clean": "rimraf dist",
+    "build-dev": "yarn clean && rollup -c --bundleConfigAsCjs",
+    "build-pro": "yarn clean && rollup -c --bundleConfigAsCjs --environment NODE_ENV:production"
   },
   "files": [
     "dist"
@@ -19,14 +21,16 @@
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.2",
-    "@types/react": "^19.0.9",
-    "postcss": "^8.5.2",
+    "@types/react": "19.0.10",
+    "postcss": "8.5.3",
     "postcss-import": "^16.1.0",
     "react": "^19.0.0",
-    "rollup": "^4.34.7",
+    "rimraf": "^6.0.1",
+    "rollup": "4.34.8",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-visualizer": "^5.14.0",
     "tslib": "^2.8.1",
     "typescript": "^5.7.3"
   },
