@@ -50,5 +50,9 @@
     "@popperjs/core": "^2.11.8",
     "html2canvas": "^1.4.1",
     "react-popper": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   }
 }
