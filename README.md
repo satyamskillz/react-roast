@@ -8,7 +8,9 @@ React Roast is an open-source app inspector that allows users to select elements
 
 ### **Demo** — [RoastNest.com](https://roastnest.com) | [Growati.com](https://growati.com)
 
-https://github.com/user-attachments/assets/bbbd0986-200f-45cb-99d5-cb44117024bb
+<!-- https://github.com/user-attachments/assets/bbbd0986-200f-45cb-99d5-cb44117024bb -->
+
+![Roastnest Widget Demo](https://github.com/user-attachments/assets/41e555a5-e7b1-47c7-8aba-59fd5065f9eb)
 
 ## Features
 
