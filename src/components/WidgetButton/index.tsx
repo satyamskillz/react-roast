@@ -4,7 +4,7 @@ import { buttonElmentClassName } from "../WidgetProvider";
 import "./styles.css";
 
 function WidgetButton() {
-	const { active, customize, setActive, disable } = useRoastWidget();
+	const { active, customize, toggleActive, disable } = useRoastWidget();
 
 	if (disable) return null;
 
@@ -12,7 +12,7 @@ function WidgetButton() {
 		<div
 			data-direction={customize?.island?.direction || defaultCustomize.island?.direction}
 			className={`${buttonElmentClassName} ${customize?.island?.className || ""}`}
-			onClick={() => setActive(!active)}
+			onClick={toggleActive}
 		>
 			<p>{customize?.island?.label || defaultCustomize.island?.label}</p>
 			<div className="switch-btn" data-active={active}>
