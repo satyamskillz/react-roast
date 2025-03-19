@@ -33,7 +33,7 @@ const WidgetForm: React.FC = () => {
 	};
 
 	return (
-		<form className={`roast-form ${customize?.form?.className || ""}`} onSubmit={handleSubmit}>
+		<form className={`rrn-form ${customize?.form?.className || ""}`} onSubmit={handleSubmit}>
 			<div className="form-inputs">
 				<textarea
 					rows={5}

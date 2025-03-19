@@ -44,12 +44,13 @@ export interface RoastWidgetContextType {
 	active: boolean;
 	disable: boolean;
 	selected: SelectedElement;
-	setActive: (active: boolean) => void;
+	toggleActive: () => void;
 	customize?: WidgetCustomizeProps | undefined;
 	windowSize: Size;
 	onFormSubmit?: FormSubmitHandler;
 	unSelectElement: () => void;
 	elementImageBlob: Blob | null;
+	avoidElementClassName: string;
 }
 
 // Widget Provider

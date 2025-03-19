@@ -1,15 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 
 import WidgetButton from "../WidgetButton";
 import WidgetOverlay from "../WidgetOverlay";
 import { RoastWidgetContext } from "../../utils/context";
 import { SelectedElement, Size, WidgetProviderProps } from "../../utils/types";
 
-export const activeElementClassName = "roast-active-element";
-export const popoverElmentClassName = "roast-widget-popover";
-export const overlayElmentClassName = "roast-widget-overlay";
-export const buttonElmentClassName = "roast-widget-button";
+export const activeElementClassName = "rrn-selected-element";
+export const popoverElmentClassName = "rrn-widget-popover";
+export const overlayElmentClassName = "rrn-widget-overlay";
+export const buttonElmentClassName = "rrn-island-button";
+export const avoidElementClassName = "rrn-avoid-element";
 
 const initialSelectedValue: SelectedElement = {
 	position: { x: 0, y: 0 },
@@ -31,6 +32,8 @@ function Provider({
 	const [selected, setSelected] = useState<SelectedElement>(initialSelectedValue);
 	const [elementImageBlob, setElementImageBlob] = useState<Blob | null>(null);
 	const [active, setActive] = useState<boolean>(false);
+
+	const toggleActive = () => setActive((prev) => !prev);
 
 	const setElementHoverable = (isHoverable: boolean) => {
 		if (isHoverable) {
@@ -83,7 +86,8 @@ function Provider({
 
 			if (
 				document.querySelector(`.${popoverElmentClassName}`)?.contains(currentElement) ||
-				document.querySelector(`.${buttonElmentClassName}`)?.contains(currentElement)
+				document.querySelector(`.${buttonElmentClassName}`)?.contains(currentElement) ||
+				document.querySelector(`.${avoidElementClassName}`)?.contains(currentElement)
 			) {
 				return;
 			}
@@ -136,12 +140,13 @@ function Provider({
 				active,
 				disable,
 				selected,
-				setActive,
+				toggleActive,
 				customize,
 				windowSize,
 				onFormSubmit,
 				unSelectElement,
 				elementImageBlob,
+				avoidElementClassName,
 			}}
 		>
 			{children}

@@ -11,9 +11,18 @@
 	--rrn-clr-900: hsl(15, 50%, 3%);
 }
 
+/* when roast widget is active, highlight the element */
 [data-roast-active="true"] {
 	*:hover:not(:has(*:hover)) {
 		outline: 2px dashed red;
+	}
+}
+
+/* when roast widget is active, avoid element will not be highlighted */
+[data-roast-active="true"] .rrn-avoid-element {
+	outline: none !important;
+	* {
+		outline: none !important;
 	}
 }
 
