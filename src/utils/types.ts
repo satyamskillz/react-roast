@@ -11,9 +11,9 @@ export interface Size {
 }
 
 export interface SelectedElement {
+	isSelected: boolean;
 	position: Position;
 	size: Size;
-	isSelected: boolean;
 }
 
 export interface FormDataProps {
@@ -26,31 +26,38 @@ export type FormSubmitHandler = (data: FormDataProps) => Promise<boolean>;
 export interface WidgetCustomizeProps {
 	form?: {
 		className?: string;
-		messageInput?: {
-			placeholder?: string;
-		};
-		submitButton?: { label?: string };
-		cancelButton?: { label?: string };
+		errorMessage?: string;
+		successMessage?: string;
+		submitButton?: { label?: string; className?: string };
+		cancelButton?: { label?: string; className?: string };
+		messageInput?: { placeholder?: string; className?: string };
 	};
 	island?: {
 		direction?: "left" | "right";
 		className?: string;
 		label?: string;
+		switchButton?: {
+			className?: string;
+			thumb?: {
+				className?: string;
+			};
+		};
 	};
 }
 
 export interface RoastWidgetContextType {
 	mode?: "local" | "remote";
 	active: boolean;
+	siteId?: string;
 	disable: boolean;
 	selected: SelectedElement;
-	toggleActive: () => void;
 	customize?: WidgetCustomizeProps | undefined;
-	windowSize: Size;
 	onFormSubmit?: FormSubmitHandler;
+	toggleActive: () => void;
 	unSelectElement: () => void;
-	elementImageBlob: Blob | null;
 	avoidElementClassName: string;
+	elementImageBlob: Blob | null;
+	windowSize: Size;
 }
 
 // Widget Provider
@@ -63,12 +70,14 @@ export interface BaseWidgetProviderProps {
 
 export interface LocalWidgetProviderProps extends BaseWidgetProviderProps {
 	mode: "local";
+	siteId?: never;
 	onFormSubmit: FormSubmitHandler;
 }
 
 export interface RemoteWidgetProviderProps extends BaseWidgetProviderProps {
+	siteId: string;
 	mode?: "remote";
-	onFormSubmit?: FormSubmitHandler;
+	onFormSubmit?: never;
 }
 
 export type WidgetProviderProps = LocalWidgetProviderProps | RemoteWidgetProviderProps;
