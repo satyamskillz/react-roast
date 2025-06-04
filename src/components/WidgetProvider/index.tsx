@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
+import { Toaster } from "react-hot-toast";
 import html2canvas from "html2canvas-pro";
 
 import WidgetButton from "../WidgetButton";
 import WidgetOverlay from "../WidgetOverlay";
 import { RoastWidgetContext } from "../../utils/context";
+import getBackgroundColor from "../../utils/getBackgroundColor";
 import { SelectedElement, Size, WidgetProviderProps } from "../../utils/types";
 
 export const activeElementClassName = "rrn-selected-element";
@@ -19,6 +21,7 @@ const initialSelectedValue: SelectedElement = {
 };
 
 function Provider({
+	siteId,
 	children,
 	customize,
 	onFormSubmit,
@@ -50,7 +53,9 @@ function Provider({
 	}, []);
 
 	const takeScreenshot = (element: HTMLElement) => {
-		html2canvas(element).then((canvas) => {
+		const backgroundColor = getBackgroundColor(element);
+
+		html2canvas(element, { backgroundColor }).then((canvas) => {
 			canvas.toBlob((blob) => blob && setElementImageBlob(blob), "image/png");
 		});
 	};
@@ -137,6 +142,7 @@ function Provider({
 		<RoastWidgetContext.Provider
 			value={{
 				mode,
+				siteId,
 				active,
 				disable,
 				selected,
@@ -150,6 +156,7 @@ function Provider({
 			}}
 		>
 			{children}
+			<Toaster position="bottom-right" reverseOrder={false} />
 		</RoastWidgetContext.Provider>
 	);
 }
