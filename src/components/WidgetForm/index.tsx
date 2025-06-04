@@ -1,29 +1,62 @@
-import useRoastWidget from "../../hooks/useRoastWidget";
-import { useState, FormEvent } from "react";
-import "./styles.css";
 import defaultCustomize from "../../utils/defaultCustomize";
+import useRoastWidget from "../../hooks/useRoastWidget";
+import ApiInstance from "../../utils/api";
+
+import { useState, FormEvent } from "react";
+import toast from "react-hot-toast";
+import clsx from "clsx";
+
+import "./styles.css";
 
 const WidgetForm: React.FC = () => {
-	const { mode, customize, onFormSubmit, elementImageBlob, unSelectElement } = useRoastWidget();
+	const { mode, customize, siteId, onFormSubmit, elementImageBlob, unSelectElement } =
+		useRoastWidget();
+
 	const [isLoading, setLoading] = useState(false);
 	const [message, setMessage] = useState("");
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 
-		if (mode === "local" && onFormSubmit) {
+		if (mode === "local" && onFormSubmit instanceof Function) {
 			setLoading(true);
-			const isSubmitted = await onFormSubmit({ message, screenshot: elementImageBlob });
-			if (isSubmitted) unSelectElement();
+			const isSubmitted = await onFormSubmit({
+				message,
+				screenshot: elementImageBlob,
+			});
+			if (isSubmitted) {
+				setMessage("");
+				unSelectElement();
+			}
 			setLoading(false);
 			return;
 		}
 
-		const fd = new FormData();
-		fd.append("message", message);
-		if (elementImageBlob) {
-			fd.append("screenshot", elementImageBlob, "screenshot.png");
+		if (!siteId) {
+			console.error("siteId is required");
+			return;
 		}
+
+		setLoading(true);
+		setLoading(true);
+		const api = new ApiInstance({ siteId });
+		const response = await api.sendRoast({
+			message,
+			imageBlob: elementImageBlob,
+		});
+
+		if (response.success) {
+			setMessage("");
+			unSelectElement();
+			const successMsg =
+				customize?.form?.successMessage || defaultCustomize?.form?.successMessage;
+			if (successMsg) toast.success(successMsg);
+		} else {
+			const errorMsg = customize?.form?.errorMessage || defaultCustomize?.form?.errorMessage;
+			if (errorMsg) toast.error(errorMsg);
+		}
+
+		setLoading(false);
 	};
 
 	const onCancel = () => {
@@ -32,26 +65,37 @@ const WidgetForm: React.FC = () => {
 		unSelectElement();
 	};
 
+	const messageInputPlaceholder =
+		customize?.form?.messageInput?.placeholder ||
+		defaultCustomize.form?.messageInput?.placeholder;
+
 	return (
-		<form className={`rrn-form ${customize?.form?.className || ""}`} onSubmit={handleSubmit}>
+		<form className={clsx("rrn-form", customize?.form?.className)} onSubmit={handleSubmit}>
 			<div className="form-inputs">
 				<textarea
 					rows={5}
 					required
 					value={message}
+					placeholder={messageInputPlaceholder}
 					onChange={(e) => setMessage(e.target.value)}
-					placeholder={
-						customize?.form?.messageInput?.placeholder ||
-						defaultCustomize.form?.messageInput?.placeholder
-					}
+					className={clsx(customize?.form?.messageInput?.className)}
 				/>
 			</div>
 			<div className="form-btns">
-				<button type="button" className="button" onClick={onCancel} disabled={isLoading}>
+				<button
+					type="button"
+					onClick={onCancel}
+					disabled={isLoading}
+					className={clsx(customize?.form?.cancelButton?.className)}
+				>
 					{customize?.form?.cancelButton?.label ||
 						defaultCustomize?.form?.cancelButton?.label}
 				</button>
-				<button type="submit" className="submit" disabled={isLoading}>
+				<button
+					type="submit"
+					disabled={isLoading}
+					className={clsx(customize?.form?.submitButton?.className)}
+				>
 					{isLoading
 						? "Submitting..."
 						: customize?.form?.submitButton?.label ||
