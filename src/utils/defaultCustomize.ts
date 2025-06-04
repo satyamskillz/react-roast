@@ -7,6 +7,8 @@ const defaultCustomize: WidgetCustomizeProps = {
 		},
 		submitButton: { label: "Roast it" },
 		cancelButton: { label: "Cancel" },
+		errorMessage: "Failed to submit message",
+		successMessage: "Message Submitted",
 	},
 	island: {
 		direction: "left",
