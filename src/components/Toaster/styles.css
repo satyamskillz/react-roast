@@ -1,0 +1,123 @@
+/* toast/toast.css */
+.toast-container {
+    position: fixed;
+    z-index: 999999;
+
+    gap: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+
+    &[data-position="top-right"] {
+        top: 20px;
+        right: 20px;
+        align-items: flex-end;
+    }
+
+    &[data-position="top-left"] {
+        top: 20px;
+        left: 20px;
+        align-items: flex-start;
+    }
+    &[data-position="bottom-right"] {
+        bottom: 20px;
+        right: 20px;
+        align-items: flex-end;
+    }
+    &[data-position="bottom-left"] {
+        bottom: 20px;
+        left: 20px;
+        align-items: flex-start;
+    }
+}
+
+.toast {
+    z-index: 99999;
+    color: black;
+    padding: 12px 12px;
+    border-radius: 8px;
+    background: white;
+
+    gap: 8px;
+    display: flex;
+    align-items: center;
+
+    min-width: 220px;
+    max-width: 360px;
+    position: relative;
+    animation: slideIn 0.3s ease forwards;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+    .icon {
+        font-size: 16px;
+        width: fit-content;
+        height: fit-content;
+
+        svg {
+            width: 20px;
+            height: auto;
+        }
+    }
+
+    &[data-type="success"] {
+        border-left: 4px solid #4caf50;
+
+        .icon {
+            color: #4caf50;
+        }
+    }
+    &[data-type="error"] {
+        border-left: 4px solid #f44336;
+
+        .icon {
+            color: #f44336;
+        }
+    }
+    &[data-type="info"] {
+        border-left: 4px solid #2196f3;
+
+        .icon {
+            color: #2196f3;
+        }
+    }
+
+    &[data-animation="fade-out"] {
+        animation: slideOut 0.3s ease forwards;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.toast-close {
+    border: none;
+    color: black;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    background: none;
+}
+
+.toast-content {
+    flex-grow: 1;
+    overflow-wrap: break-word;
+}
