@@ -16,6 +16,8 @@ export interface SelectedElement {
     size: Size;
 }
 
+export type ToastPlacement = "top-right" | "top-left" | "bottom-right" | "bottom-left";
+
 export type ScreenshotType = "full-screenshot" | "selected-screenshot";
 
 export type ScreenshotBlobs = Array<{

@@ -1,5 +1,6 @@
 import { createContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { avoidElementClassName } from "../../utils/classNames";
+import { ToastPlacement } from "../../utils/types";
 import CheckIcon from "../../icons/check";
 import CrossIcon from "../../icons/cross";
 import InfoIcon from "../../icons/info";
@@ -37,8 +38,8 @@ export const toast = {
 };
 
 interface ToastProviderProps {
+    position?: ToastPlacement;
     children: ReactNode;
-    position?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
     max?: number;
 }
 
