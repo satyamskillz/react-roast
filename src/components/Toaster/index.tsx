@@ -1,9 +1,11 @@
 import { createContext, useState, useCallback, useEffect, ReactNode } from "react";
-import { avoidElementClassName } from "../WidgetProvider";
-import "./styles.css";
+import { avoidElementClassName } from "../../utils/classNames";
 import CheckIcon from "../../icons/check";
 import CrossIcon from "../../icons/cross";
 import InfoIcon from "../../icons/info";
+import clsx from "clsx";
+
+import "./styles.css";
 
 type ToastType = "success" | "error" | "info";
 
@@ -82,7 +84,7 @@ export function ToastProvider({ children, position = "top-right", max = 3 }: Toa
     return (
         <ToastContext.Provider value={{ show }}>
             {children}
-            <div className={`toast-container ${avoidElementClassName}`} data-position={position}>
+            <div className={clsx("toast-container", avoidElementClassName)} data-position={position}>
                 {toasts.map((toast) => (
                     <div
                         key={toast.id}

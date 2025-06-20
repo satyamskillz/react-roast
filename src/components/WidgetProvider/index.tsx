@@ -8,11 +8,13 @@ import { RoastWidgetContext } from "../../utils/context";
 import getBackgroundColor from "../../utils/getBackgroundColor";
 import { SelectedElement, Size, WidgetProviderProps } from "../../utils/types";
 
-export const activeElementClassName = "rrn-selected-element";
-export const popoverElmentClassName = "rrn-widget-popover";
-export const overlayElmentClassName = "rrn-widget-overlay";
-export const buttonElmentClassName = "rrn-island-button";
-export const avoidElementClassName = "rrn-avoid-element";
+import {
+    activeElementClassName,
+    avoidElementClassName,
+    buttonElmentClassName,
+    overlayElmentClassName,
+    popoverElmentClassName,
+} from "../../utils/classNames";
 
 const initialSelectedValue: SelectedElement = {
     position: { x: 0, y: 0 },

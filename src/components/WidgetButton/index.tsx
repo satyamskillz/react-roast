@@ -1,5 +1,5 @@
+import { buttonElmentClassName } from "../../utils/classNames";
 import defaultCustomize from "../../utils/defaultCustomize";
-import { buttonElmentClassName } from "../WidgetProvider";
 import useRoastWidget from "../../hooks/useRoastWidget";
 import clsx from "clsx";
 import "./styles.css";
