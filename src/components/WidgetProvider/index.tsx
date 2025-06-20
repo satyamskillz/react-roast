@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import html2canvas from "html2canvas-pro";
 
+import { ToastProvider } from "../Toaster";
 import WidgetButton from "../WidgetButton";
 import WidgetOverlay from "../WidgetOverlay";
-import { ToastProvider } from "../Toaster";
 import { RoastWidgetContext } from "../../utils/context";
 import getBackgroundColor from "../../utils/getBackgroundColor";
-import { SelectedElement, Size, WidgetProviderProps } from "../../utils/types";
+import { ScreenshotBlobs, SelectedElement, Size, WidgetProviderProps } from "../../utils/types";
 
 import {
     activeElementClassName,
@@ -35,7 +35,7 @@ function Provider({
         height: typeof window !== "undefined" ? window.innerHeight : 0,
     });
     const [selected, setSelected] = useState<SelectedElement>(initialSelectedValue);
-    const [elementImageBlob, setElementImageBlob] = useState<Blob | null>(null);
+    const [screenshotBlobs, setScreenshotBlobs] = useState<ScreenshotBlobs>([]);
     const [active, setActive] = useState<boolean>(false);
 
     const toggleActive = () => setActive((prev) => !prev);
@@ -49,16 +49,30 @@ function Provider({
     };
 
     const unSelectElement = useCallback(() => {
+        setScreenshotBlobs([]);
         setElementHoverable(true);
-        setElementImageBlob(null);
         setSelected(initialSelectedValue);
     }, []);
 
-    const takeScreenshot = (element: HTMLElement) => {
+    const takeScreenshot = async (element: HTMLElement) => {
         const backgroundColor = getBackgroundColor(element);
 
-        html2canvas(element, { backgroundColor }).then((canvas) => {
-            canvas.toBlob((blob) => blob && setElementImageBlob(blob), "image/png");
+        // Take screenshot of selected element
+        // TODO: Handle errors in screenshot capture
+        // Error: Unable to find element in cloned iframe
+        await html2canvas(element, { backgroundColor }).then((canvas) => {
+            canvas.toBlob(
+                (blob) => blob && setScreenshotBlobs((prev) => [...prev, { type: "selected-screenshot", blob }]),
+                "image/png"
+            );
+        });
+
+        // Take screenshot of full page
+        await html2canvas(document.body, { useCORS: true, foreignObjectRendering: true }).then((canvas) => {
+            canvas.toBlob(
+                (blob) => blob && setScreenshotBlobs((prev) => [...prev, { type: "full-screenshot", blob }]),
+                "image/png"
+            );
         });
     };
 
@@ -151,8 +165,7 @@ function Provider({
                 onFormSubmit,
                 toggleActive,
                 unSelectElement,
-                elementImageBlob,
-                avoidElementClassName,
+                screenshotBlobs,
             }}
         >
             {children}

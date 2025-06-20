@@ -10,7 +10,7 @@ import clsx from "clsx";
 import "./styles.css";
 
 const WidgetForm: React.FC = () => {
-    const { mode, customize, siteId, onFormSubmit, elementImageBlob, unSelectElement } = useRoastWidget();
+    const { mode, customize, siteId, screenshotBlobs, onFormSubmit, unSelectElement } = useRoastWidget();
 
     const [isLoading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
@@ -20,10 +20,7 @@ const WidgetForm: React.FC = () => {
 
         if (mode === "local" && onFormSubmit instanceof Function) {
             setLoading(true);
-            const isSubmitted = await onFormSubmit({
-                message,
-                screenshot: elementImageBlob,
-            });
+            const isSubmitted = await onFormSubmit({ message, screenshotBlobs });
             if (isSubmitted) {
                 setMessage("");
                 unSelectElement();
@@ -38,12 +35,8 @@ const WidgetForm: React.FC = () => {
         }
 
         setLoading(true);
-        setLoading(true);
         const api = new ApiInstance({ siteId });
-        const response = await api.sendRoast({
-            message,
-            imageBlob: elementImageBlob,
-        });
+        const response = await api.sendRoast({ message, screenshotBlobs });
 
         if (response.success) {
             setMessage("");
