@@ -1,0 +1,18 @@
+.auto-grow-textarea {
+    width: 100%;
+    padding: 8px;
+
+    resize: none;
+    outline: none;
+    overflow-y: hidden;
+    display: block;
+
+    border-radius: 4px;
+    font-family: inherit;
+    background: transparent;
+    color: var(--rrn-clr-900);
+    font-size: calc(14 / 16 * 1rem);
+    border: 1px solid var(--rrn-clr-600);
+
+    transition: border 0.2s ease;
+}
