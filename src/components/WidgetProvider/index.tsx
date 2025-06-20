@@ -27,8 +27,8 @@ function Provider({
     children,
     customize,
     onFormSubmit,
-    disable = false,
     mode = "remote",
+    hideIsland = false,
 }: WidgetProviderProps) {
     const [windowSize, setWindowSize] = useState<Size>({
         width: typeof window !== "undefined" ? window.innerWidth : 0,
@@ -36,9 +36,16 @@ function Provider({
     });
     const [selected, setSelected] = useState<SelectedElement>(initialSelectedValue);
     const [screenshotBlobs, setScreenshotBlobs] = useState<ScreenshotBlobs>([]);
+    const [IslandHidden, setIslandHidden] = useState<boolean>(false);
     const [active, setActive] = useState<boolean>(false);
 
-    const toggleActive = () => setActive((prev) => !prev);
+    const toggleActive = useCallback(() => setActive((prev) => !prev), []);
+    const setIslandVisiblity = useCallback((v: boolean) => setIslandHidden(!v), []);
+
+    useEffect(() => {
+        if (hideIsland) setIslandHidden(true);
+        return () => setIslandHidden(false);
+    }, [hideIsland]);
 
     const setElementHoverable = (isHoverable: boolean) => {
         if (isHoverable) {
@@ -158,14 +165,15 @@ function Provider({
                 mode,
                 siteId,
                 active,
-                disable,
                 selected,
                 customize,
                 windowSize,
+                IslandHidden,
                 onFormSubmit,
                 toggleActive,
                 unSelectElement,
                 screenshotBlobs,
+                setIslandVisiblity,
             }}
         >
             {children}

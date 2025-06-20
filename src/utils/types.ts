@@ -66,22 +66,23 @@ export interface RoastWidgetContextType {
     mode?: "local" | "remote";
     active: boolean;
     siteId?: string;
-    disable: boolean;
+    windowSize: Size;
+    IslandHidden: boolean;
     selected: SelectedElement;
     screenshotBlobs: ScreenshotBlobs;
     customize?: WidgetCustomizeProps | undefined;
     onFormSubmit?: FormSubmitHandler;
     toggleActive: () => void;
     unSelectElement: () => void;
-    windowSize: Size;
+    setIslandVisiblity: (visible: boolean) => void;
 }
 
 // Widget Provider
 
 export interface BaseWidgetProviderProps {
     customize?: WidgetCustomizeProps;
+    hideIsland?: boolean;
     children: ReactNode;
-    disable?: boolean;
 }
 
 export interface LocalWidgetProviderProps extends BaseWidgetProviderProps {

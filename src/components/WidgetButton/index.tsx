@@ -5,8 +5,8 @@ import clsx from "clsx";
 import "./styles.css";
 
 function WidgetButton() {
-    const { active, customize, toggleActive, disable } = useRoastWidget();
-    if (disable) return null;
+    const { active, customize, toggleActive, IslandHidden } = useRoastWidget();
+    if (IslandHidden) return null;
 
     return (
         <div
