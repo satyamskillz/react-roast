@@ -50,7 +50,7 @@ export default [
 				minimize: true,
 			}),
 			visualizer({
-				open: true,
+				open: false,
 				gzipSize: true,
 				brotliSize: true,
 				filename: "bundle-analysis.html",
