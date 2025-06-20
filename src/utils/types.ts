@@ -16,9 +16,16 @@ export interface SelectedElement {
     size: Size;
 }
 
+export type ScreenshotType = "full-screenshot" | "selected-screenshot";
+
+export type ScreenshotBlobs = Array<{
+    blob: Blob;
+    type: ScreenshotType;
+}>;
+
 export interface FormDataProps {
     message: string;
-    screenshot: Blob | null;
+    screenshotBlobs: ScreenshotBlobs;
 }
 
 export type WidgetPlacement =
@@ -59,12 +66,11 @@ export interface RoastWidgetContextType {
     siteId?: string;
     disable: boolean;
     selected: SelectedElement;
+    screenshotBlobs: ScreenshotBlobs;
     customize?: WidgetCustomizeProps | undefined;
     onFormSubmit?: FormSubmitHandler;
     toggleActive: () => void;
     unSelectElement: () => void;
-    avoidElementClassName: string;
-    elementImageBlob: Blob | null;
     windowSize: Size;
 }
 
