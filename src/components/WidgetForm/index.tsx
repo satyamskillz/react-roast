@@ -1,7 +1,7 @@
 import defaultCustomize from "../../utils/defaultCustomize";
 import useRoastWidget from "../../hooks/useRoastWidget";
-import AutoGrowTextarea from "../AutoGrowTextarea";
 import ApiInstance from "../../utils/api";
+import Textarea from "../Textarea";
 import { toast } from "../Toaster";
 
 import { useState, FormEvent } from "react";
@@ -73,7 +73,7 @@ const WidgetForm: React.FC = () => {
     return (
         <form className={clsx("rrn-form", customize?.form?.className)} onSubmit={handleSubmit}>
             <div className="form-inputs">
-                <AutoGrowTextarea
+                <Textarea
                     className={customize?.form?.messageInput?.className}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder={messageInputPlaceholder}

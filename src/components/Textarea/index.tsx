@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import "./styles.css";
 
-interface AutoGrowTextareaProps {
+interface TextareaProps {
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     placeholder?: string;
     required?: boolean;
@@ -14,7 +14,7 @@ interface AutoGrowTextareaProps {
     value: string;
 }
 
-const AutoGrowTextarea: React.FC<AutoGrowTextareaProps> = ({
+const Textarea: React.FC<TextareaProps> = ({
     placeholder = "Type something...",
     required = false,
     disabled = false,
@@ -56,4 +56,4 @@ const AutoGrowTextarea: React.FC<AutoGrowTextareaProps> = ({
     );
 };
 
-export default AutoGrowTextarea;
+export default Textarea;
