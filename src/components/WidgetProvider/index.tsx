@@ -175,12 +175,14 @@ function Provider({
 
 const WidgetProvider = ({ children, ...props }: WidgetProviderProps) => (
     <Provider {...props}>
-        <ToastProvider position="bottom-right" max={10}>
+        <ToastProvider
+            position={props.customize?.island?.placement === "bottom-right" ? "top-right" : "bottom-right"}
+            max={10}
+        >
             {children}
             <WidgetButton />
             <WidgetOverlay />
         </ToastProvider>
-        {/* <Toaster position="bottom-right" reverseOrder={false} /> */}
     </Provider>
 );
 
