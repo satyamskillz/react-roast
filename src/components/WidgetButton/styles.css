@@ -10,6 +10,7 @@
     transform: translateY(-50%);
     background: var(--rrn-clr-600);
     border-radius: 0 4px 4px 0;
+    padding-left: 7px;
     gap: 8px;
 
     outline: none !important;
