@@ -46,7 +46,6 @@ const Textarea: React.FC<TextareaProps> = ({
             value={value}
             rows={minRows}
             ref={textareaRef}
-            autoFocus={true}
             disabled={disabled}
             onChange={onChange}
             required={required}
