@@ -109,7 +109,7 @@ function Provider({
     useEffect(() => {
         if (!active) return;
 
-        const handleClick = (e: MouseEvent) => {
+        const handleClick = async (e: MouseEvent) => {
             const currentElement = e.target as HTMLElement;
 
             if (
@@ -128,6 +128,8 @@ function Provider({
                 return;
             }
 
+            await takeScreenshot(currentElement);
+
             const rect = currentElement.getBoundingClientRect();
             setSelected({
                 position: { x: rect.left, y: rect.top },
@@ -139,8 +141,6 @@ function Provider({
 
             document.querySelector(`.${activeElementClassName}`)?.classList.remove(activeElementClassName);
             currentElement.classList.add(activeElementClassName);
-
-            takeScreenshot(currentElement);
         };
 
         window.addEventListener("click", handleClick, true);
