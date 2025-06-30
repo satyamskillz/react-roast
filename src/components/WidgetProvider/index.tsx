@@ -74,8 +74,17 @@ function Provider({
             );
         });
 
+        const ignoreElementClassNames = [popoverElmentClassName, buttonElmentClassName, overlayElmentClassName];
+
         // Take screenshot of full page
-        await html2canvas(document.body, { useCORS: true, foreignObjectRendering: true }).then((canvas) => {
+        await html2canvas(document.body, {
+            useCORS: true,
+            foreignObjectRendering: true,
+            ignoreElements: (element: Element): boolean => {
+                // Ignore elements that should not be captured
+                return ignoreElementClassNames.some((cn: string) => element.classList.contains(cn));
+            },
+        }).then((canvas) => {
             canvas.toBlob(
                 (blob) => blob && setScreenshotBlobs((prev) => [...prev, { type: "full-screenshot", blob }]),
                 "image/png"
@@ -128,8 +137,6 @@ function Provider({
                 return;
             }
 
-            await takeScreenshot(currentElement);
-
             const rect = currentElement.getBoundingClientRect();
             setSelected({
                 position: { x: rect.left, y: rect.top },
@@ -141,6 +148,8 @@ function Provider({
 
             document.querySelector(`.${activeElementClassName}`)?.classList.remove(activeElementClassName);
             currentElement.classList.add(activeElementClassName);
+
+            await takeScreenshot(currentElement);
         };
 
         window.addEventListener("click", handleClick, true);
