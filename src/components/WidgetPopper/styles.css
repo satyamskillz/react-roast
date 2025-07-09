@@ -1,34 +1,3 @@
-.rrn-widget-popover {
-	.arrow {
-		content: "";
-		visibility: visible;
-		position: absolute;
-		width: 12px;
-		height: 12px;
-		background: var(--rrn-clr-100);
-	}
-
-	&[data-popper-placement^="top"] > .arrow {
-		bottom: -6px;
-		left: 50%;
-		transform: translateX(-50%) rotate(45deg);
-	}
-
-	&[data-popper-placement^="bottom"] > .arrow {
-		top: -6px;
-		left: 50%;
-		transform: translateX(-50%) rotate(45deg);
-	}
-
-	&[data-popper-placement^="left"] > .arrow {
-		right: -6px;
-		top: 50%;
-		transform: translateY(-50%) rotate(45deg);
-	}
-
-	&[data-popper-placement^="right"] > .arrow {
-		left: -6px;
-		top: 50%;
-		transform: translateY(-50%) rotate(45deg);
-	}
+.rrn-widget-popover .arrow {
+    fill: var(--rrn-clr-100);
 }

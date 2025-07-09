@@ -1,12 +1,11 @@
+import { FloatingArrow, arrow, autoPlacement, autoUpdate, offset, shift, useFloating } from "@floating-ui/react";
 import { activeElementClassName, popoverElmentClassName } from "../../utils/classNames";
-import { useState, useEffect } from "react";
-import { usePopper } from "react-popper";
+import { useState, useEffect, useRef } from "react";
 import WidgetForm from "../WidgetForm";
 import "./styles.css";
 
 const WidgetPopper: React.FC = () => {
-    const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
-    const [popoverElement, setPopoverElement] = useState<HTMLDivElement | null>(null);
+    const arrowRef = useRef<SVGSVGElement>(null);
     const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 
     useEffect(() => {
@@ -14,24 +13,21 @@ const WidgetPopper: React.FC = () => {
         setReferenceElement(element);
     }, []);
 
-    const { styles, attributes } = usePopper(referenceElement, popoverElement, {
-        modifiers: [
-            { name: "flip" },
-            { name: "preventOverflow" },
-            { name: "arrow", options: { element: arrowElement } },
-            { name: "offset", options: { offset: [0, 24] } },
-        ],
+    const { refs, floatingStyles, placement, context } = useFloating({
+        elements: { reference: referenceElement },
+        whileElementsMounted: autoUpdate,
+        middleware: [offset(24), shift({ crossAxis: true }), autoPlacement(), arrow({ element: arrowRef })],
     });
 
     return (
         <div
-            ref={setPopoverElement}
+            ref={refs.setFloating}
+            data-placement={placement}
             className={popoverElmentClassName}
-            style={{ ...styles.popper, zIndex: 1000000 }}
-            {...attributes.popper}
+            style={{ ...floatingStyles, zIndex: 1000000 }}
         >
             <WidgetForm />
-            <div ref={setArrowElement} className="arrow" />
+            <FloatingArrow className="arrow" ref={arrowRef} context={context} />
         </div>
     );
 };

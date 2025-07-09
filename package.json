@@ -48,11 +48,10 @@
     "react-component"
   ],
   "dependencies": {
-    "@popperjs/core": "^2.11.8",
+    "@floating-ui/react": "^0.27.13",
     "clsx": "2.1.1",
     "html2canvas-pro": "1.5.8",
-    "react-device-detect": "2.2.3",
-    "react-popper": "^2.3.0"
+    "react-device-detect": "2.2.3"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
