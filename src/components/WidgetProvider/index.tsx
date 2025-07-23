@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import html2canvas from "html2canvas-pro";
 
+import Notification from "../Notification";
 import { ToastProvider } from "../Toaster";
 import WidgetButton from "../WidgetButton";
 import WidgetOverlay from "../WidgetOverlay";
@@ -199,6 +200,7 @@ const WidgetProvider = ({ children, ...props }: WidgetProviderProps) => (
             {children}
             <WidgetButton />
             <WidgetOverlay />
+            <Notification />
         </ToastProvider>
     </Provider>
 );
