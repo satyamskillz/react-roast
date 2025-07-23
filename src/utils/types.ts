@@ -30,6 +30,11 @@ export interface FormDataProps {
     screenshotBlobs: ScreenshotBlobs;
 }
 
+export interface NotificationMessage {
+    message: string;
+    type: "info" | "hint" | "offer" | "reward" | "social" | "urgent";
+}
+
 export type WidgetPlacement =
     | "left-center"
     | "left-bottom"
@@ -59,6 +64,10 @@ export interface WidgetCustomizeProps {
                 className?: string;
             };
         };
+    };
+    notifications?: {
+        enable?: boolean;
+        messages?: NotificationMessage[];
     };
 }
 
