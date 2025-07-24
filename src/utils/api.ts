@@ -1,7 +1,6 @@
 import { ScreenshotBlobs, ScreenshotType } from "./types";
 import * as device from "react-device-detect";
 import config from "./config";
-import { toast } from "../components/Toaster";
 
 const webhookAPI = config.webhookAPI;
 
@@ -145,7 +144,7 @@ class ApiInstance {
 
             if (!response.ok) throw new Error("Error submitting roast to DB");
 
-            return await response.text();
+            return await response.json();
         });
     }
 
@@ -180,9 +179,10 @@ class ApiInstance {
             }
 
             // Submit the roast to the database
-            await this.submitRoastToDB({ message, screenshots });
+            const response = await this.submitRoastToDB({ message, screenshots });
 
             return {
+                trackingUrl: response.trackingUrl,
                 message: "Roasted successfully!",
                 success: true,
             };
