@@ -1,6 +1,7 @@
 import defaultCustomize from "../../utils/defaultCustomize";
 import useRoastWidget from "../../hooks/useRoastWidget";
 import ApiInstance from "../../utils/api";
+import CheckIcon from "../../icons/check";
 import Textarea from "../Textarea";
 import { toast } from "../Toaster";
 
@@ -12,6 +13,7 @@ import "./styles.css";
 const WidgetForm: React.FC = () => {
     const { mode, customize, siteId, screenshotBlobs, onFormSubmit, unSelectElement } = useRoastWidget();
 
+    const [trackingUrl, setTrackingUrl] = useState<string | null>(null);
     const [isLoading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
@@ -40,7 +42,7 @@ const WidgetForm: React.FC = () => {
 
         if (response.success) {
             setMessage("");
-            unSelectElement();
+            setTrackingUrl(response.trackingUrl);
             const successMsg = customize?.form?.successMessage || defaultCustomize?.form?.successMessage;
             if (successMsg) toast.success(successMsg);
         } else {
@@ -55,7 +57,10 @@ const WidgetForm: React.FC = () => {
         setMessage("");
         setLoading(false);
         unSelectElement();
+        setTrackingUrl(null);
     };
+
+    const openTrackingUrl = () => trackingUrl && window.open(trackingUrl, "_blank");
 
     const messageInputPlaceholder =
         customize?.form?.messageInput?.placeholder || defaultCustomize.form?.messageInput?.placeholder;
@@ -63,7 +68,22 @@ const WidgetForm: React.FC = () => {
     const submitButtonLabel = customize?.form?.submitButton?.label || defaultCustomize?.form?.submitButton?.label;
     const cancelButtonLabel = customize?.form?.cancelButton?.label || defaultCustomize?.form?.cancelButton?.label;
 
-    return (
+    return !trackingUrl ? (
+        <div className={clsx("rrn-form-success")}>
+            <div className="content-group">
+                <CheckIcon />
+                <p>Thanks for the feedback!</p>
+            </div>
+            <div className="btns-group">
+                <button type="button" onClick={onCancel} disabled={isLoading}>
+                    Close
+                </button>
+                <button type="button" onClick={openTrackingUrl}>
+                    Track Progress
+                </button>
+            </div>
+        </div>
+    ) : (
         <form className={clsx("rrn-form", customize?.form?.className)} onSubmit={handleSubmit}>
             <div className="form-inputs">
                 <Textarea
