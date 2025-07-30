@@ -68,7 +68,7 @@ const WidgetForm: React.FC = () => {
     const submitButtonLabel = customize?.form?.submitButton?.label || defaultCustomize?.form?.submitButton?.label;
     const cancelButtonLabel = customize?.form?.cancelButton?.label || defaultCustomize?.form?.cancelButton?.label;
 
-    return !trackingUrl ? (
+    return trackingUrl ? (
         <div className={clsx("rrn-form-success")}>
             <div className="content-group">
                 <CheckIcon />
