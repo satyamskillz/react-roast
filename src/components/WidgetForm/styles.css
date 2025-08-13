@@ -9,6 +9,25 @@
 
     .form-inputs {
         margin-bottom: 4px;
+
+        .email-input {
+            width: 100%;
+            outline: none;
+            margin-top: 12px;
+            line-height: 1.4;
+            padding: 8px 10px;
+            border-radius: 4px;
+            font-family: inherit;
+            background: transparent;
+            color: var(--rrn-clr-900);
+            font-size: calc(14 / 16 * 1rem);
+            border: 1px solid var(--rrn-clr-600);
+        }
+        .note {
+            margin-top: 4px;
+            line-height: 1.4;
+            font-size: calc(12 / 16 * 1rem);
+        }
     }
     .form-btns {
         display: flex;
@@ -16,8 +35,9 @@
 
         button {
             outline: none;
+            line-height: 1.2;
             font-weight: 300;
-            padding: 8px 16px;
+            padding: 8px 12px;
             border-radius: 4px;
             font-size: calc(14 / 16 * 1rem);
 

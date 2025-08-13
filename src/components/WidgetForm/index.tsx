@@ -1,21 +1,38 @@
 import defaultCustomize from "../../utils/defaultCustomize";
 import useRoastWidget from "../../hooks/useRoastWidget";
+import PersonManager from "../../utils/PersonManager";
 import ApiInstance from "../../utils/api";
 import CheckIcon from "../../icons/check";
 import Textarea from "../Textarea";
 import { toast } from "../Toaster";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, Fragment, useEffect } from "react";
 import clsx from "clsx";
 
 import "./styles.css";
 
 const WidgetForm: React.FC = () => {
-    const { mode, customize, siteId, screenshotBlobs, onFormSubmit, unSelectElement } = useRoastWidget();
+    const { mode, customize, siteId, userData, screenshotBlobs, onFormSubmit, unSelectElement } = useRoastWidget();
 
     const [trackingUrl, setTrackingUrl] = useState<string | null>(null);
     const [isLoading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [email, setEmail] = useState("");
+
+    const [showEmail, setShowEmail] = useState(true);
+
+    useEffect(() => {
+        const personManager = new PersonManager();
+        const person = personManager.getDetails();
+
+        if (person?.id && person.hasEmail) {
+            setShowEmail(false);
+        } else if (userData?.email) {
+            setShowEmail(false);
+        }
+
+        return () => setShowEmail(true);
+    }, []);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -36,9 +53,11 @@ const WidgetForm: React.FC = () => {
             return;
         }
 
+        let user = { email, ...userData };
+
         setLoading(true);
         const api = new ApiInstance({ siteId });
-        const response = await api.sendRoast({ message, screenshotBlobs });
+        const response = await api.sendRoast({ message, user, screenshotBlobs });
 
         if (response.success) {
             setMessage("");
@@ -90,12 +109,26 @@ const WidgetForm: React.FC = () => {
                     className={customize?.form?.messageInput?.className}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder={messageInputPlaceholder}
+                    minRows={userData?.email ? 3 : 2}
                     disabled={isLoading}
                     value={message}
                     required={true}
                     maxHeight={300}
-                    minRows={3}
+                    name="message"
                 />
+                {showEmail && (
+                    <Fragment>
+                        <input
+                            type="email"
+                            name="email"
+                            value={email}
+                            className="email-input"
+                            placeholder="Email Address — Optional"
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <p className="note">Note: Enter email address to receive rewards or track feedback.</p>
+                    </Fragment>
+                )}
             </div>
             <div className="form-btns">
                 <button
