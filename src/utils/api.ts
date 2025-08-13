@@ -1,5 +1,6 @@
-import { ScreenshotBlobs, ScreenshotType } from "./types";
+import { ScreenshotBlobs, ScreenshotType, User } from "./types";
 import * as device from "react-device-detect";
+import PersonManager from "./PersonManager";
 import config from "./config";
 
 const webhookAPI = config.webhookAPI;
@@ -10,6 +11,7 @@ interface UploadImageToS3Props {
 }
 
 interface RoastToDBProps {
+    user?: User; // Optional user data for tracking or rewards
     message: string; // Message to be sent
     screenshots: Array<{
         // Array of screenshots
@@ -20,6 +22,7 @@ interface RoastToDBProps {
 
 interface SendRoastProps {
     message: string; // Message to be sent
+    user?: User; // Optional user data for tracking or rewards
     screenshotBlobs: ScreenshotBlobs; // Array of screenshot blobs
 }
 
@@ -97,9 +100,22 @@ class ApiInstance {
 
     private async submitRoastToDB(props: RoastToDBProps) {
         return this.retry(async () => {
-            const { message, screenshots } = props;
+            const { message, screenshots, user } = props;
 
-            const response = await fetch(webhookAPI + "/v1/submit-feedback", {
+            let userData = undefined;
+
+            const personManager = new PersonManager();
+            const person = personManager.getDetails();
+
+            if (person?.id && person.hasEmail) {
+                userData = person;
+            } else if (person?.id && !person.hasEmail && user?.email) {
+                userData = user;
+            } else if (!person?.id && user?.email) {
+                userData = user;
+            }
+
+            const response = await fetch(webhookAPI + "/v2/submit-feedback", {
                 method: "POST",
                 headers: {
                     "X-Site-Code": this.siteId,
@@ -108,9 +124,12 @@ class ApiInstance {
                 body: JSON.stringify({
                     message,
                     screenshots,
-                    deviceInfo: {
-                        type: device.deviceType,
-                        userAgent: device.getUA,
+                    user: userData,
+                    metadata: {
+                        device: {
+                            type: device.deviceType,
+                            userAgent: device.getUA,
+                        },
                         page: {
                             title: document.title,
                             url: window.location.href,
@@ -144,20 +163,22 @@ class ApiInstance {
 
             if (!response.ok) throw new Error("Error submitting roast to DB");
 
-            return await response.json();
+            const responseData = await response.json();
+
+            // If person data is returned, save it to local storage
+            personManager.setDetails(responseData.person);
+
+            return responseData;
         });
     }
 
-    async sendRoast({ message, screenshotBlobs }: SendRoastProps) {
+    async sendRoast({ message, user, screenshotBlobs }: SendRoastProps) {
         try {
             let screenshots = [];
 
             if (!message || !screenshotBlobs || screenshotBlobs.length === 0) {
                 throw new Error("Message and screenshot blobs are required");
             }
-
-            // toast.info(screenshotBlobs.length);
-            // throw new Error("Testing error handling");
 
             for (const screenshot of screenshotBlobs) {
                 // Validate screenshot
@@ -179,7 +200,7 @@ class ApiInstance {
             }
 
             // Submit the roast to the database
-            const response = await this.submitRoastToDB({ message, screenshots });
+            const response = await this.submitRoastToDB({ message, user, screenshots });
 
             return {
                 trackingUrl: response.trackingUrl,
