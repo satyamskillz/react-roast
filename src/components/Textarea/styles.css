@@ -1,6 +1,6 @@
 .auto-grow-textarea {
     width: 100%;
-    padding: 8px;
+    padding: 8px 10px;
 
     resize: none;
     outline: none;

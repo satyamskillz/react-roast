@@ -12,6 +12,7 @@ interface TextareaProps {
     disabled?: boolean;
     maxHeight?: number;
     value: string;
+    name: string;
 }
 
 const Textarea: React.FC<TextareaProps> = ({
@@ -23,6 +24,7 @@ const Textarea: React.FC<TextareaProps> = ({
     maxHeight,
     onChange,
     value,
+    name,
 }) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -43,6 +45,7 @@ const Textarea: React.FC<TextareaProps> = ({
 
     return (
         <textarea
+            name={name}
             value={value}
             rows={minRows}
             ref={textareaRef}
