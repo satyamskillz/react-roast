@@ -7,7 +7,7 @@ import WidgetButton from "../WidgetButton";
 import WidgetOverlay from "../WidgetOverlay";
 import { RoastWidgetContext } from "../../utils/context";
 import getBackgroundColor from "../../utils/getBackgroundColor";
-import { ScreenshotBlobs, SelectedElement, Size, WidgetProviderProps } from "../../utils/types";
+import { ScreenshotBlobs, SelectedElement, Size, User, WidgetProviderProps } from "../../utils/types";
 
 import {
     activeElementClassName,
@@ -37,11 +37,13 @@ function Provider({
     });
     const [selected, setSelected] = useState<SelectedElement>(initialSelectedValue);
     const [screenshotBlobs, setScreenshotBlobs] = useState<ScreenshotBlobs>([]);
+    const [userData, setUserData] = useState<User | undefined>(undefined);
     const [IslandHidden, setIslandHidden] = useState<boolean>(false);
     const [active, setActive] = useState<boolean>(false);
 
     const toggleActive = useCallback(() => setActive((prev) => !prev), []);
     const setIslandVisiblity = useCallback((v: boolean) => setIslandHidden(!v), []);
+    const setUser = useCallback((user: User) => setUserData(user), []);
 
     useEffect(() => {
         if (hideIsland) setIslandHidden(true);
@@ -173,6 +175,8 @@ function Provider({
         <RoastWidgetContext.Provider
             value={{
                 mode,
+                userData,
+                setUser,
                 siteId,
                 active,
                 selected,
