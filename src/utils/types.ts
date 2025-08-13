@@ -25,7 +25,15 @@ export type ScreenshotBlobs = Array<{
     type: ScreenshotType;
 }>;
 
+export interface User {
+    id?: string;
+    name?: string;
+    email: string;
+    customData?: Record<string, any>;
+}
+
 export interface FormDataProps {
+    email?: string;
     message: string;
     screenshotBlobs: ScreenshotBlobs;
 }
@@ -73,11 +81,13 @@ export interface WidgetCustomizeProps {
 
 export interface RoastWidgetContextType {
     mode?: "local" | "remote";
+    userData?: User;
     active: boolean;
     siteId?: string;
     windowSize: Size;
     IslandHidden: boolean;
     selected: SelectedElement;
+    setUser: (user: User) => void;
     screenshotBlobs: ScreenshotBlobs;
     customize?: WidgetCustomizeProps | undefined;
     onFormSubmit?: FormSubmitHandler;
