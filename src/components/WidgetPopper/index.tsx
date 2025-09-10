@@ -1,8 +1,9 @@
 import { FloatingArrow, arrow, autoPlacement, autoUpdate, offset, shift, useFloating } from "@floating-ui/react";
-import { activeElementClassName, popoverElmentClassName } from "../../utils/classNames";
+import { activeElementClassName, avoidElementClassName, popoverElmentClassName } from "../../utils/classNames";
 import { useState, useEffect, useRef } from "react";
 import WidgetForm from "../WidgetForm";
 import "./styles.css";
+import clsx from "clsx";
 
 const WidgetPopper: React.FC = () => {
     const arrowRef = useRef<SVGSVGElement>(null);
@@ -23,8 +24,8 @@ const WidgetPopper: React.FC = () => {
         <div
             ref={refs.setFloating}
             data-placement={placement}
-            className={popoverElmentClassName}
             style={{ ...floatingStyles, zIndex: 1000000 }}
+            className={clsx(popoverElmentClassName, avoidElementClassName)}
         >
             <WidgetForm />
             <FloatingArrow className="arrow" ref={arrowRef} context={context} />

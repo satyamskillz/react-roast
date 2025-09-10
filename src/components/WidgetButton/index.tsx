@@ -1,4 +1,4 @@
-import { buttonElmentClassName } from "../../utils/classNames";
+import { avoidElementClassName, buttonElmentClassName } from "../../utils/classNames";
 import defaultCustomize from "../../utils/defaultCustomize";
 import useRoastWidget from "../../hooks/useRoastWidget";
 import clsx from "clsx";
@@ -11,7 +11,7 @@ function WidgetButton() {
     return (
         <div
             data-placement={customize?.island?.placement || defaultCustomize.island?.placement}
-            className={clsx(buttonElmentClassName, customize?.island?.className)}
+            className={clsx(buttonElmentClassName, avoidElementClassName, customize?.island?.className)}
             onClick={toggleActive}
         >
             <p>{customize?.island?.label || defaultCustomize.island?.label}</p>
