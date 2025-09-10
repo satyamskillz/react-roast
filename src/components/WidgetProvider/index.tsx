@@ -106,8 +106,6 @@ function Provider({
         });
     };
 
-    // useEffect(() => setElementHoverable(active), [active]);
-
     useEffect(() => {
         if (!active) return;
 
@@ -132,19 +130,22 @@ function Provider({
     useEffect(() => {
         if (!active) return;
 
-        const handleClick = async (e: MouseEvent) => {
-            const currentElement = e.target as HTMLElement;
+        const ignoredClassNames = [avoidElementClassName];
 
-            if (
-                document.querySelector(`.${popoverElmentClassName}`)?.contains(currentElement) ||
-                document.querySelector(`.${buttonElmentClassName}`)?.contains(currentElement) ||
-                document.querySelector(`.${avoidElementClassName}`)?.contains(currentElement)
-            ) {
-                return;
-            }
+        const isInsideIgnored = (el: HTMLElement | null) => {
+            if (!el) return false;
+            return ignoredClassNames.some((cn) => !!el.closest(`.${cn}`));
+        };
+
+        const handleClick = async (e: MouseEvent) => {
+            const currentElement = e.target as HTMLElement | null;
+            if (!currentElement) return;
+
+            if (isInsideIgnored(currentElement)) return;
 
             e.preventDefault();
             e.stopPropagation();
+            // e.stopImmediatePropagation();
 
             if (document.querySelector(`.${overlayElmentClassName}`)?.contains(currentElement)) {
                 unSelectElement();
@@ -166,8 +167,8 @@ function Provider({
             await takeScreenshot(currentElement);
         };
 
-        window.addEventListener("click", handleClick, true);
-        return () => window.removeEventListener("click", handleClick, true);
+        window.addEventListener("pointerdown", handleClick, true);
+        return () => window.removeEventListener("pointerdown", handleClick, true);
     }, [active, unSelectElement]);
 
     const updateSelectedElement = () => {
