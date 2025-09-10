@@ -85,19 +85,23 @@ export function ToastProvider({ children, position = "top-right", max = 3 }: Toa
     return (
         <ToastContext.Provider value={{ show }}>
             {children}
-            <div className={clsx("toast-container", avoidElementClassName)} data-position={position}>
+            <div className={clsx("rrn-toaster", avoidElementClassName)} data-position={position}>
                 {toasts.map((toast) => (
                     <div
                         key={toast.id}
-                        className="toast"
                         data-type={toast.type}
+                        className="rrn-toaster_toast"
                         data-animation={toast.closing ? "fade-out" : "fade-in"}
                     >
-                        <span className="icon">{toast.icon ?? getDefaultIcon(toast.type)}</span>
-                        <div className="toast-content">
+                        <span className="rrn-toaster_toast_icon">{toast.icon ?? getDefaultIcon(toast.type)}</span>
+                        <div className="rrn-toaster_toast_message">
                             {typeof toast.msg === "string" ? <span>{toast.msg}</span> : toast.msg}
                         </div>
-                        <button className="toast-close" onClick={() => removeToast(toast.id)} aria-label="Dismiss">
+                        <button
+                            className="rrn-toaster_toast_close_btn"
+                            onClick={() => removeToast(toast.id)}
+                            aria-label="Dismiss"
+                        >
                             &#x2715;
                         </button>
                     </div>
