@@ -41,7 +41,16 @@ function Provider({
     const [IslandHidden, setIslandHidden] = useState<boolean>(false);
     const [active, setActive] = useState<boolean>(false);
 
-    const toggleActive = useCallback(() => setActive((prev) => !prev), []);
+    const toggleActive = useCallback(
+        () =>
+            setActive((prev) => {
+                if (prev) unSelectElement();
+                setElementHoverable(!prev);
+                return !prev;
+            }),
+        []
+    );
+
     const setIslandVisiblity = useCallback((v: boolean) => setIslandHidden(!v), []);
     const setUser = useCallback((user: User) => setUserData(user), []);
 
@@ -53,8 +62,10 @@ function Provider({
     const setElementHoverable = (isHoverable: boolean) => {
         if (isHoverable) {
             document.body.dataset.roastActive = "true";
+            document.body.style.cursor = "crosshair";
         } else {
             delete document.body.dataset.roastActive;
+            document.body.style.cursor = "default";
         }
     };
 
@@ -95,7 +106,7 @@ function Provider({
         });
     };
 
-    useEffect(() => setElementHoverable(active), [active]);
+    // useEffect(() => setElementHoverable(active), [active]);
 
     useEffect(() => {
         if (!active) return;
