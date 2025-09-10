@@ -36,8 +36,8 @@ export default [
 					comments: false,
 				},
 				compress: {
-					drop_console: true,
-					drop_debugger: true,
+					drop_console: isProduction,
+					drop_debugger: isProduction,
 					pure_funcs: ["console.info", "console.warn"],
 				},
 				mangle: {
