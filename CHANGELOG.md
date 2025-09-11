@@ -9,21 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Various documentation improvements.
--   Enhanced README with examples and usage instructions.
+-   Added `CHANGELOG.md` to document project updates and version history.
 
 ### Changed
 
--   Improved click handling and pointer events.
--   Updated styling and z-index for WidgetButton.
--   Improved Toaster component styles and animations.
+-   Updated README to enhance examples and clarify self-host and hosted usage instructions.
+-   Enhanced README with additional sections and examples for better clarity.
 
 ### Fixed
 
--   Reset states on toggle and improved cursor style.
--   Corrected conditional rendering and success message display in WidgetForm.
-
----
+-   Clear previous screenshots before taking new ones in `takeScreenshot` function.
+-   Update click handling to ignore specified class names and switch to pointerdown event.
+-   Add `avoidElementClassName` to WidgetButton and WidgetPopper for improved styling.
+-   Update console and debugger drop settings to respect production environment.
+-   Reset all states on toggle and update cursor style for better user interaction.
 
 ## [1.4.0] - 2025-07-31
 
@@ -42,15 +41,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Added missing name prop to Textarea and adjusted padding.
 
----
-
 ## [1.3.4] - 2025-06-30
 
 ### Fixed
 
 -   Enhanced screenshot functionality to ignore specified elements.
-
----
 
 ## [1.3.3] - 2025-06-27
 
@@ -58,23 +53,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Made handleClick asynchronous to await screenshot capture.
 
----
-
 ## [1.3.2] - 2025-06-24
 
 ### Fixed
 
 -   Adjusted padding-left for WidgetButton component.
 
----
-
 ## [1.3.1] - 2025-06-24
 
 ### Fixed
 
 -   Minor bug fixes and improvements.
-
----
 
 ## [1.3.0] - 2025-06-24
 
@@ -89,8 +78,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Refactored WidgetButton, WidgetProvider, ToastProvider, WidgetForm, and types for clarity and flexibility.
 
----
-
 ## [1.2.0] - 2025-06-05
 
 ### Added
@@ -104,8 +91,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Enhanced WidgetForm component and loading state management.
 -   Improved className handling and styling consistency.
 
----
-
 ## [1.1.0] - 2025-03-19
 
 ### Added
@@ -117,15 +102,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Replaced setActive with toggleActive in WidgetButton.
 
----
-
 ## [1.0.5] - 2025-03-02
 
 ### Fixed
 
 -   Corrected line break syntax in README.md.
-
----
 
 ## [1.0.4] - 2025-02-25
 
@@ -133,16 +114,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   PeerDependencies for react and react-dom in package.json.
 
----
-
 ## [1.0.3] - 2025-02-21
 
 ### Changed
 
 -   Updated .gitignore and .npmignore.
 -   Enhanced Rollup configuration for production builds.
-
----
 
 ## [1.0.2] - 2025-02-20
 
@@ -154,12 +131,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Improved code comments.
 
----
-
 ## [1.0.0] - Initial Release
 
 ### Added
 
 -   Initial stable release.
-
----
