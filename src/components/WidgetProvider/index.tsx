@@ -78,6 +78,9 @@ function Provider({
     const takeScreenshot = async (element: HTMLElement) => {
         const backgroundColor = getBackgroundColor(element);
 
+        // Always clear previous screenshots before taking new ones
+        setScreenshotBlobs([]);
+
         // Take screenshot of selected element
         // TODO: Handle errors in screenshot capture
         // Error: Unable to find element in cloned iframe
