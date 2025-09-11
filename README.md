@@ -11,8 +11,11 @@ A React widget to get feedback
 -   [Features](#features)
 -   [Installation](#installation)
 -   [Usage](#usage)
-    -   [React Example](#react-example)
-    -   [Next.js Example](#nextjs-example)
+    -   [Self-host Usage](#self-host-usage)
+    -   [Hosted Usage](#hosted-usage)
+-   [Examples](#examples)
+    -   [Self-Host Example for React](#self-host-example-for-react)
+    -   [Self-Host Example for Nextjs](#self-host-example-for-nextjs)
 -   [Props](#props)
     -   [Widget Provider Props](#widget-provider-props)
     -   [Widget Customize Props](#widget-customize-props)
@@ -37,12 +40,18 @@ React Roast is an open-source app inspector that allows users to select elements
 
 ## Features
 
--   Select any element on a webpage
--   Capture element position, size, and a screenshot
--   Supports React-based frameworks like Next.js
--   Self-host and customize
--   Lightweight and easy to integrate
--   Written in Typescript and built using rollup
+-   🖱️ Select any element on a webpage
+-   📸 Capture element position, size, and a screenshot
+-   📝 Collect feedback with customizable forms
+-   🔔 Supports notifications and user rewards
+-   ⚛️ Supports React-based frameworks like Next.js
+-   🏠 Self-host and customize widget appearance and behavior
+-   ⚡ Lightweight and easy to integrate
+-   🟦 Written in Typescript and built using rollup
+-   🌐 Works in both local and remote modes
+-   🛠️ Imperative control via `useReactRoast` hook
+-   🖼️ Flexible screenshot options: full page or selected element
+-   📤 Easily send feedback to your backend or channels (Slack, Discord, etc.)
 
 ## Installation
 
@@ -58,9 +67,28 @@ yarn add react-roast
 
 ## Usage
 
-Wrap your app with `WidgetProvider` from `react-roast`. The provider should be used on the client side. Set `mode` to `local` and define `onFormSubmit`.
+To use React Roast, wrap your application with the `WidgetProvider` component from `react-roast`. Make sure to use the provider on the client side, set the `mode` prop to `local`, and implement the `onFormSubmit` callback to handle form submissions.
 
-### React Example
+### Self-host Usage
+
+1. Install the `react-roast` npm package.
+2. Import and wrap your app with the `WidgetProvider` component.
+3. Set `mode="local"` and implement the `onFormSubmit` callback to process feedback data.
+4. Store feedback data in your preferred backend or database, and return a boolean status.
+5. Optionally, use the `customize` prop to adjust the widget’s appearance and behavior.
+
+### Hosted Usage
+
+1. Sign in to [RoastNest](https://roastnest.com).
+2. Add your site and obtain a unique `siteId`.
+3. Install the `react-roast` npm package.
+4. Import and wrap your app with the `WidgetProvider` component.
+5. Set `mode="remote"` and provide your `siteId` to connect your site or app.
+6. Optionally, use the `customize` prop to tailor the widget for your site.
+
+## Examples
+
+### Self-Host Example for React
 
 ```tsx
 import WidgetProvider, { FormDataProps } from "react-roast";
@@ -69,7 +97,8 @@ export default function App() {
     const handleSubmit = async ({ message, email, screenshotBlobs }: FormDataProps): Promise<boolean> => {
         // Must return boolean value.
         try {
-            // Send message, email, and screenshots to your channel (e.g., Slack, Discord)
+            // Send feedback data to your backend
+            // Or send to you channel (e.g., Slack, Discord)
             return true;
         } catch (e) {
             return false;
@@ -83,17 +112,20 @@ export default function App() {
 }
 ```
 
-### Next.js Example
+### Self-Host Example for Next.js
 
 ```tsx
+// app/RoastProvider.tsx
+
 "use client";
 import WidgetProvider, { FormDataProps } from "react-roast";
 import { ReactNode } from "react";
 
-export default function ReactRoastProvider({ children }: { children: ReactNode }) {
+export default function RoastProvider({ children }: { children: ReactNode }) {
     const handleSubmit = async ({ message, email, screenshotBlobs }: FormDataProps): Promise<boolean> => {
         try {
-            // Send feedback to your backend or service
+            // Send feedback data to your backend
+            // Or send to you channel (e.g., Slack, Discord)
             return true;
         } catch (e) {
             return false;
@@ -107,14 +139,17 @@ export default function ReactRoastProvider({ children }: { children: ReactNode }
 }
 ```
 
-In `app/layout.tsx`:
-
 ```tsx
-export default function RootLayout({ children }) {
+// app/layout.tsx
+
+import RoastProvider from "./RoastProvider";
+import { ReactNode } from "react";
+
+export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html>
             <body>
-                <ReactRoastProvider>{children}</ReactRoastProvider>
+                <RoastProvider>{children}</RoastProvider>
             </body>
         </html>
     );
