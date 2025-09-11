@@ -2,42 +2,63 @@
 
 A React widget to get feedback
 
+---
+
+## Table of Contents
+
+-   [Purpose](#purpose)
+-   [Demo](#demo)
+-   [Features](#features)
+-   [Installation](#installation)
+-   [Usage](#usage)
+    -   [React Example](#react-example)
+    -   [Next.js Example](#nextjs-example)
+-   [Props](#props)
+    -   [Widget Provider Props](#widget-provider-props)
+    -   [Widget Customize Props](#widget-customize-props)
+    -   [Default Customization](#default-customization)
+    -   [Form Data Props](#form-data-props)
+-   [Hooks](#hooks)
+    -   [useReactRoast](#usereactroast)
+-   [Contribution](#contribution)
+-   [License](#license)
+
+---
+
 ## Purpose
 
 React Roast is an open-source app inspector that allows users to select elements on a webpage, capture their state (including screenshots), and send the details to a desired channel. This tool is useful for UI/UX testing, feedback collection, and debugging user interfaces.
 
-### **Demo** — [RoastNest.com](https://roastnest.com) | [Growati.com](https://growati.com)
+## Demo
 
-<!-- https://github.com/user-attachments/assets/bbbd0986-200f-45cb-99d5-cb44117024bb -->
-
-<br>
+**Live Demo:** [RoastNest.com](https://roastnest.com) | [Growati.com](https://growati.com)
 
 ![Roastnest Widget Demo](https://github.com/user-attachments/assets/41e555a5-e7b1-47c7-8aba-59fd5065f9eb)
 
 ## Features
 
-✅ Select any element on a webpage\
-✅ Capture element position, size, and a screenshot\
-✅ Supports React-based frameworks like Next.js\
-✅ Supports self-host and customization\
-✅ Lightweight and easy to integrate\
-✅ Written in Typescript and build using rollup
+-   Select any element on a webpage
+-   Capture element position, size, and a screenshot
+-   Supports React-based frameworks like Next.js
+-   Self-host and customize
+-   Lightweight and easy to integrate
+-   Written in Typescript and built using rollup
 
 ## Installation
 
-```sh npm
+```sh
 npm install react-roast
 ```
 
 or
 
-```sh yarn
+```sh
 yarn add react-roast
 ```
 
-## Local Usage
+## Usage
 
-Wrap your app with `WidgetProvider` provided by `react-roast`. The provider should be in client side and mode should be set to `local` and onFormSubmit should be defined.
+Wrap your app with `WidgetProvider` from `react-roast`. The provider should be used on the client side. Set `mode` to `local` and define `onFormSubmit`.
 
 ### React Example
 
@@ -45,110 +66,254 @@ Wrap your app with `WidgetProvider` provided by `react-roast`. The provider shou
 import WidgetProvider, { FormDataProps } from "react-roast";
 
 export default function App() {
-	const handleSubmit = async ({ message, screenshot }: FormDataProps): Promise<boolean> => {
-		// Must return boolean value.
-
-		try {
-			// Send message to desired channel like, Slack or discord
-
-			return true;
-		} catch (e) {
-			return false;
-		}
-	};
-	return (
-		<WidgetProvider mode="local" onFormSubmit={handleSubmit}>
-			<Main />
-		</WidgetProvider>
-	);
+    const handleSubmit = async ({ message, email, screenshotBlobs }: FormDataProps): Promise<boolean> => {
+        // Must return boolean value.
+        try {
+            // Send message, email, and screenshots to your channel (e.g., Slack, Discord)
+            return true;
+        } catch (e) {
+            return false;
+        }
+    };
+    return (
+        <WidgetProvider mode="local" onFormSubmit={handleSubmit}>
+            <Main />
+        </WidgetProvider>
+    );
 }
 ```
 
-### NextJS App Example
+### Next.js Example
 
 ```tsx
 "use client";
-
 import WidgetProvider, { FormDataProps } from "react-roast";
 import { ReactNode } from "react";
 
-export default function ReactRoastProvider({ children: ReactNode }) {
-	const handleSubmit = async ({ message, screenshot }: FormDataProps): Promise<boolean> => {
-		// Must return boolean value.
-
-		try {
-			// Send message to desired channel like, Slack or discord
-
-			return true;
-		} catch (e) {
-			return false;
-		}
-	};
-	return (
-		<WidgetProvider mode="local" onFormSubmit={handleSubmit}>
-			{children}
-		</WidgetProvider>
-	);
+export default function ReactRoastProvider({ children }: { children: ReactNode }) {
+    const handleSubmit = async ({ message, email, screenshotBlobs }: FormDataProps): Promise<boolean> => {
+        try {
+            // Send feedback to your backend or service
+            return true;
+        } catch (e) {
+            return false;
+        }
+    };
+    return (
+        <WidgetProvider mode="local" onFormSubmit={handleSubmit}>
+            {children}
+        </WidgetProvider>
+    );
 }
 ```
 
-In app/layout.tsx
+In `app/layout.tsx`:
 
 ```tsx
 export default function RootLayout({ children }) {
-	return (
-		<html>
-			<body>
-				<ReactRoastProvider>{children}</ReactRoastProvider>
-			</body>
-		</html>
-	);
+    return (
+        <html>
+            <body>
+                <ReactRoastProvider>{children}</ReactRoastProvider>
+            </body>
+        </html>
+    );
 }
 ```
 
-## Widget Props
+## Props
 
 ### Widget Provider Props
 
-| Property       | Type                | Description                                        |
-| -------------- | ------------------- | -------------------------------------------------- |
-| `mode`         | `local` or `remote` | Defines if the widget operates locally or remotely |
-| `children`     | `ReactNode`         | Nested components inside the provider              |
-| `disable`      | `boolean`           | Disable the widget                                 |
-| `onFormSubmit` | `function`          | Callback function for form submission              |
-| `customize`    | `object`            | Customization options                              |
+| Property       | Type                | Description                                                            |
+| -------------- | ------------------- | ---------------------------------------------------------------------- |
+| `mode`         | `local` or `remote` | Defines if the widget operates locally or remotely                     |
+| `children`     | `ReactNode`         | Nested components inside the provider                                  |
+| `onFormSubmit` | `function`          | Callback for form submission. Returns a boolean for success/failure.   |
+| `customize`    | `object`            | Customization options for widget appearance and behavior. See below.   |
+| `siteId`       | `string`            | Optional site identifier, useful for remote mode or multi-site setups. |
 
 ### Widget Customize Props
 
-You can customize the widget by passing `customize` props with the following options:
+Customize the widget by passing the `customize` prop with these options:
 
-| Property                        | Type              | Description                          |
-| ------------------------------- | ----------------- | ------------------------------------ |
-| `form.className`                | `string`          | Custom class for the form            |
-| `form.messageInput.placeholder` | `string`          | Placeholder text for message input   |
-| `form.submitButton.label`       | `string`          | Label for submit button              |
-| `form.cancelButton.label`       | `string`          | Label for cancel button              |
-| `island.direction`              | `left` or `right` | Position of the floating button      |
-| `island.className`              | `string`          | Custom class for the floating button |
-| `island.label`                  | `string`          | Label for the floating button        |
+| Property                              | Type      | Description                                                         |
+| ------------------------------------- | --------- | ------------------------------------------------------------------- |
+| `form.className`                      | `string`  | Custom CSS class for the form container                             |
+| `form.errorMessage`                   | `string`  | Error message shown when submission fails                           |
+| `form.successMessage`                 | `string`  | Success message shown when submission succeeds                      |
+| `form.messageInput.className`         | `string`  | Custom CSS class for the message input field                        |
+| `form.messageInput.placeholder`       | `string`  | Placeholder text for the message input field                        |
+| `form.submitButton.label`             | `string`  | Label text for the submit button                                    |
+| `form.submitButton.className`         | `string`  | Custom CSS class for the submit button                              |
+| `form.cancelButton.label`             | `string`  | Label text for the cancel button                                    |
+| `form.cancelButton.className`         | `string`  | Custom CSS class for the cancel button                              |
+| `island.placement`                    | `string`  | Position of the island button (`left-center`, `right-bottom`, etc.) |
+| `island.className`                    | `string`  | Custom CSS class for the island button                              |
+| `island.label`                        | `string`  | Label text for the island button                                    |
+| `island.switchButton.className`       | `string`  | Custom CSS class for the switch button inside the island            |
+| `island.switchButton.thumb.className` | `string`  | Custom CSS class for the thumb of the switch button                 |
+| `notifications.enable`                | `boolean` | Enable or disable notifications                                     |
+| `notifications.messages`              | `array`   | Array of notification message objects                               |
+| `notifications.messages.type`         | `string`  | Type of notification message (`info`, `hint`, `offer`, etc.)        |
+| `notifications.messages.message`      | `string`  | Text content of the notification message                            |
+
+**Example usage:**
+
+```tsx
+<WidgetProvider
+    mode="local"
+    onFormSubmit={handleSubmit}
+    customize={{
+        form: {
+            className: "custom-form",
+            errorMessage: "Submission failed!",
+            successMessage: "Feedback sent!",
+            messageInput: {
+                className: "custom-input",
+                placeholder: "Type your feedback...",
+            },
+            submitButton: {
+                label: "Send",
+                className: "custom-submit",
+            },
+            cancelButton: {
+                label: "Cancel",
+                className: "custom-cancel",
+            },
+        },
+        island: {
+            placement: "right-center",
+            className: "custom-island",
+            label: "Roast",
+            switchButton: {
+                className: "custom-switch",
+                thumb: {
+                    className: "custom-thumb",
+                },
+            },
+        },
+        notifications: {
+            enable: true,
+            messages: [
+                { type: "info", message: "Feedback sent!" },
+                { type: "hint", message: "Something went wrong." },
+            ],
+        },
+    }}
+>
+    <Main />
+</WidgetProvider>
+```
+
+### Default Customization
+
+The widget comes with sensible defaults. You can override any part using the `customize` prop.
+
+```typescript
+const defaultCustomize = {
+    form: {
+        messageInput: {
+            placeholder: "Don't be nice, Just Roast!",
+        },
+        submitButton: { label: "Roast it" },
+        cancelButton: { label: "Cancel" },
+        errorMessage: "Failed to submit message",
+        successMessage: "Message Submitted",
+    },
+    island: {
+        label: "Roast Mode",
+        placement: "left-center",
+    },
+    notifications: {
+        enable: true,
+        messages: [
+            { message: "✨ Feedback help us improve!", type: "info" },
+            { message: "👈 Click here to share feedback", type: "hint" },
+            { message: "🎁 Give feedback and get discount", type: "offer" },
+            { message: "💎 You’ve earned discount! Redeem them now.", type: "reward" },
+            { message: "⭐ Users love this feature!", type: "social" },
+            { message: "⏰ Last chance! discount ends in 2 days.", type: "urgent" },
+        ],
+    },
+};
+```
 
 ### Form Data Props
 
-| Property     | Type     | Description                                      |
-| ------------ | -------- | ------------------------------------------------ |
-| `message`    | `string` | The message input by the user.                   |
-| `screenshot` | `Blob`   | The captured screenshot of the selected element. |
+| Property          | Type                | Description                            |
+| ----------------- | ------------------- | -------------------------------------- |
+| `email`           | `string` (optional) | The user's email address, if provided. |
+| `message`         | `string`            | The message input by the user.         |
+| `screenshotBlobs` | `ScreenshotBlobs`   | Array of screenshot blobs (see below). |
+
+**ScreenshotBlobs structure:**
+
+```typescript
+// ScreenshotBlobs type
+Array<{
+    blob: Blob;
+    type: "full-screenshot" | "selected-screenshot";
+}>;
+```
+
+-   `blob`: The captured screenshot as a Blob object.
+-   `type`: Indicates if the screenshot is of the full page or a selected element.
+
+**Example FormDataProps usage:**
+
+```typescript
+interface FormDataProps {
+    email?: string;
+    message: string;
+    screenshotBlobs: ScreenshotBlobs;
+}
+```
+
+## Hooks
+
+### useReactRoast
+
+The `useReactRoast` hook provides imperative control and utility functions for the widget. Use it inside your components to interact with the widget programmatically.
+
+**Returned values:**
+
+| Property                | Type       | Description                                       |
+| ----------------------- | ---------- | ------------------------------------------------- |
+| `isWidgetActive`        | `boolean`  | Whether the widget is currently active            |
+| `toggleWidget`          | `function` | Toggle the widget's active state                  |
+| `avoidElementClassName` | `string`   | CSS class name to exclude elements from selection |
+| `setIslandVisiblity`    | `function` | Show or hide the widget island button             |
+| `setUser`               | `function` | Set or update the user data                       |
+
+**Usage Example:**
+
+```tsx
+import { useReactRoast } from "react-roast";
+
+function WidgetControls() {
+    const { isWidgetActive, toggleWidget, setIslandVisiblity, setUser } = useReactRoast();
+
+    return (
+        <div>
+            <button onClick={toggleWidget}>{isWidgetActive ? "Deactivate" : "Activate"} Widget</button>
+            <button onClick={() => setIslandVisiblity(false)}>Hide Island</button>
+            <button onClick={() => setUser({ email: "user@example.com" })}>Set User</button>
+        </div>
+    );
+}
+```
 
 ## Contribution
 
-Contributions are welcome! If you would like to improve react roast, please follow these steps:
+Contributions are welcome! If you would like to improve React Roast, please follow these steps:
 
 1. Fork the repository.
 2. Create a new branch for your feature or fix.
 3. Make changes and commit them.
 4. Submit a pull request.
 
-Please ensure your contributions align with the project’s coding standards and best practices. If You want help, [contact here](https://x.com/satyamskillz)
+Please ensure your contributions align with the project’s coding standards and best practices. If you want help, [contact here](https://x.com/satyamskillz)
 
 ## License
 
