@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.4.1",
   "name": "react-roast",
   "description": "A React widget to get feedback",
   "main": "dist/index.js",
